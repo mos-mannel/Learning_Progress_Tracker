@@ -1,0 +1,27 @@
+# STOP! Don't commit yet. Reset the staging area:
+git reset
+```
+
+**Step 2: Fix your .gitignore**
+
+Open your `.gitignore` file and make sure it contains:
+```
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Secrets
+.env
+.env.local
+
+# IDE files
+.idea/
+.vscode/
+*.pyc
+__pycache__/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Progress Tracker</title>
+    <style>
+        :root{
+            --primary:#6366f1;
+            --primary-dark:#4f46e5;
+            --success:#10b981;
+            --warning:#f59e0b;
+            --danger:#ef4444;
+            --bg:#393D7E;
+            --card:#ffffff;
+            --muted:#6b7280;
+            --border:#e5e7eb;
+        }
+        *{box-sizing:border-box}
+        body{
+            font-family: Inter, Arial, sans-serif;
+            background: linear-gradient(135deg,#3b3f8a 0%, #2f325f 100%);
+            min-height:100vh;
+            padding:24px;
+            color:#111827;
+        }
+        .container{
+            max-width:1000px;
+            margin:0 auto;
+        }
+        .header{
+            text-align:center;
+            color:#fff;
+            margin-bottom:24px;
+        }
+        .header h1{
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .header p{
+            font-size: 1.3rem;
+            opacity: 0.9;
+            color: #e0e7ff;
+        }
+        .card{
+            background:var(--card);
+            border-radius:14px;
+            padding:20px;
+            margin-bottom:20px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.12);
+        }
+        .card h2{margin-bottom:12px;color:#111827}
+        .form-group{margin-bottom:12px}
+        input[type="text"], select{
+            width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+            font-size:14px; background:#fbfdff;
+        }
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:10px 14px;
+            border-radius:10px;
+            border:0;
+            cursor:pointer;
+            text-decoration:none;
+            transition: all 0.3s ease;
+        }
+        .btn-primary{
+            background:var(--primary);
+            color:#fff;
+        }
+        .btn-primary:hover{
+            background:var(--primary-dark);
+            transform:translateY(-2px);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+        }
+        .btn-success{
+            background:var(--success);
+            color:#fff;
+        }
+        .btn-success:hover{
+            background:#0da271;
+            transform:translateY(-2px);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+        }
+        .btn-warning{
+            background:#f59e0b;
+            color:#fff;
+        }
+        .btn-warning:hover{
+            background:#d97706;
+            transform:translateY(-2px);
+        }
+        .btn-danger{
+            background:var(--danger);
+            color:#fff;
+        }
+        .btn-danger:hover{
+            background:#dc2626;
+            transform:translateY(-2px);
+        }
+        .module-list{display:flex;flex-direction:column;gap:14px}
+        .module-item{
+            background:#fbfdff;
+            border-radius:12px;
+            padding:16px;
+            border-left:4px solid var(--primary);
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            transition: all 0.3s ease;
+        }
+        .module-item:hover{
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .module-header{display:flex;align-items:center;gap:12px}
+        .module-title{font-weight:600;flex:1}
+        .submodules{margin-left:28px;display:flex;flex-direction:column;gap:8px}
+        .submodule-item{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            background:#fff;
+            padding:10px;
+            border-radius:8px;
+            border:1px solid var(--border);
+            transition: all 0.2s ease;
+        }
+        .submodule-item:hover{
+            transform: translateX(4px);
+            border-color: var(--primary);
+        }
+        .submodule-left{display:flex;align-items:center;gap:12px;flex:1}
+        input[type="checkbox"]{transform:scale(1.15);cursor:pointer}
+        .small-btn{padding:6px 10px;border-radius:8px;font-size:13px}
+        .muted{color:var(--muted);font-size:14px}
+        .save-all{
+            width: auto;
+            padding: 12px 35px;
+            border-radius:12px;
+            font-size:16px;
+            font-weight:600;
+            margin: 0 auto;
+            display: block;
+            transition: all 0.3s ease;
+            transform: scale(1);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+        .save-all:hover{
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 12px 25px rgba(16, 185, 129, 0.4);
+            background: #0da271;
+        }
+        .save-container{
+            text-align: center;
+            margin-top: 18px;
+        }
+        @media (max-width:768px){
+            .module-header{flex-direction:column;align-items:flex-start}
+            .submodule-item{flex-direction:column;align-items:flex-start;gap:8px}
+            .header h1{
+                font-size: 2.5rem;
+            }
+            .header p{
+                font-size: 1.1rem;
+            }
+            .save-all{
+                padding: 10px 25px;
+                font-size: 15px;
+            }
+            .save-all:hover{
+                transform: scale(1.05) translateY(-2px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Learning Progress Tracker</h1>
+            <p>Track your course modules and submodules efficiently</p>
+        </div>
+
+        <!-- Add Module -->
+        <div class="card">
+            <h2>Add New Module</h2>
+            <form action="/add_module" method="POST">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="e.g., Python Fundamentals" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Module</button>
+            </form>
+        </div>
+
+        <!-- Add Submodule -->
+        <div class="card">
+            <h2>Add Submodule</h2>
+            <form action="/add_submodule" method="POST">
+                <div class="form-group">
+                    <select name="module_index" required>
+                        <option value="">Select a module</option>
+                        {% for module in modules %}
+                        <option value="{{ loop.index0 }}">{{ module.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="e.g., Variables and Data Types" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Submodule</button>
+            </form>
+        </div>
+
+        <!-- Modules & Save Progress -->
+        <div class="card">
+            <h2>Your Learning Progress</h2>
+
+            <form action="/update_progress" method="POST">
+                <div class="module-list">
+                    {% for module in modules %}
+                    <div class="module-item">
+                        <div class="module-header">
+                            <label style="display:flex;align-items:center;gap:12px;">
+                                <input type="checkbox" name="module_{{ loop.index0 }}"
+                                       {% if module.completed %}checked{% endif %}>
+                                <div class="module-title">{{ module.name }}</div>
+                            </label>
+
+                            <div style="display:flex;gap:8px;">
+                                <a href="/delete_module/{{ loop.index0 }}" class="btn btn-danger small-btn"
+                                   onclick="return confirm('Delete this module and all its submodules?')">Delete</a>
+                            </div>
+                        </div>
+
+                        {% if module.submodules %}
+                        <div class="submodules">
+                            {% for submodule in module.submodules %}
+                            <div class="submodule-item">
+                                <div class="submodule-left">
+                                    <label style="display:flex;align-items:center;gap:10px;">
+                                        <input type="checkbox"
+                                               name="module_{{ loop.index0 }}_sub_{{ loop.index0 }}"
+                                               {% if submodule.completed %}checked{% endif %}>
+                                        <div class="muted">{{ submodule.name }}</div>
+                                    </label>
+                                </div>
+
+                                <div>
+                                    <a href="/delete_submodule/{{ loop.index0 }}/{{ loop.index0 }}"
+                                       class="btn btn-warning small-btn"
+                                       onclick="return confirm('Delete this submodule?')">
+                                        ✖ Remove
+                                    </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if modules %}
+                <div class="save-container">
+                    <button type="submit" class="btn btn-success save-all">Save All Progress</button>
+                </div>
+                {% else %}
+                <div class="muted" style="padding:18px;text-align:center">No modules yet — add one above.</div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('a[href^="/delete_"]').forEach(a=>{
+                a.addEventListener('click', function(e){
+                    // Confirmation handled inline
+                });
+            });
+        });
+    </script>
+</body>
+</html>
