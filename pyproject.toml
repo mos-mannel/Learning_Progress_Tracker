@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "learning-progress-tracker"
+version = "0.1.0"
+description = "Learning Progress Tracker"
+authors = ["mos mannel <mmadiator05@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flask = "^2.3.3"
+
+[tool.poetry.group.dev.dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

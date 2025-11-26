@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: Learning_Progress_Tracker
+    name: learning-progress-tracker
     env: python
     buildCommand: poetry install --no-dev
-    startCommand: poetry run python -m your_app_module
+    startCommand: python app.py
     envVars:
       - key: PYTHON_VERSION
-        value: 3.13.4
+        value: 3.11.7
